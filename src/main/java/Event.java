@@ -12,4 +12,9 @@ public class Event extends Task {
 	   return res;
    }
    
+   public String getSave() {
+	   String res = "E|" + super.getSave() + at + "|";
+	   return res;
+   }
+   
 }

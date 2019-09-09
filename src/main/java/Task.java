@@ -16,6 +16,10 @@ public class Task {
         return (isDone ? "\u2713" : "\u2718"); // return tick or X symbols
     }
     
+    public String getStatusNum() {
+    	return (isDone ? "1" : "0");
+    }
+    
     public void setAsDone() {
     	this.isDone = true;
     }
@@ -26,6 +30,11 @@ public class Task {
     
    public String getPrtout() {
 	   String res = "[" + this.getStatusIcon() + "] " + this.getDescription();
+	   return res;
+   }
+   
+   public String getSave() {
+	   String res = this.getStatusNum() + "|" + this.getDescription() + "|";
 	   return res;
    }
    

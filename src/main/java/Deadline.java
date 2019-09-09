@@ -12,4 +12,9 @@ public class Deadline extends Task {
 	   return res;
    }
    
+   public String getSave() {
+	   String res = "D|" + super.getSave() + by + "|";
+	   return res;
+   }
+   
 }

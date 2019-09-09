@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 
 public class Duke {
 	
@@ -11,6 +12,54 @@ public class Duke {
 		}  
 	}
 	
+	public static int loadLst(Task lst[]) throws IOException {
+		File file = new File("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt");
+		Scanner sc = new Scanner(file);
+		String curline = "", desc = "", time = "";
+		int cnt = 0;
+		char type, done;
+		while (sc.hasNextLine()) { 
+		    curline = sc.nextLine(); 
+		    type = curline.charAt(0);
+		    done = curline.charAt(2);
+		    desc = "";
+		    time = "";
+		    int i = 4;
+		    while (curline.charAt(i) != '|') {
+		        desc += curline.charAt(i);
+		        i++;
+		    }
+		    i++;
+		    if (type == 'D' || type == 'E') {
+			    while (curline.charAt(i) != '|') {
+			        time += curline.charAt(i);
+			        i++;
+			    }
+		    }
+		    if (type == 'T') {
+		    	ToDo newtd = new ToDo(desc); 
+            	lst[cnt++] = newtd;
+		    } else if (type == 'D') {
+		    	Deadline newdl = new Deadline(desc, time); 
+        		lst[cnt++] = newdl;
+		    } else if (type == 'E') {
+		    	Event newevt = new Event(desc, time); 
+        		lst[cnt++] = newevt;
+		    }
+		}
+		return cnt;
+	}
+	
+	public static void saveLst(Task lst[], int cnt) throws IOException {
+		FileWriter fileWriter = new FileWriter("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt", false);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		for (int i = 0; i < cnt; i++) {
+    		printWriter.printf(lst[i].getSave() + "%n");
+    	}
+		printWriter.close();
+		fileWriter.close();
+	}
+	
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String inp, inpstrt, check1;
@@ -18,6 +67,11 @@ public class Duke {
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
         int cnt = 0;
+        try {
+            cnt = loadLst(lst);
+        } catch(IOException m) {
+        	System.out.println(m);
+        }
         while (true) {
         	try {
 	            inp = in.nextLine();
@@ -48,6 +102,7 @@ public class Duke {
 	                lst[idx].setAsDone();
 	                System.out.println("Nice! I've marked this task as done:");
 	                System.out.println(lst[idx].getPrtout());
+	                saveLst(lst, cnt);
 	            } else { 
 	            	String cat = "", time = "", tsk = "";
 	            	char curchar;
@@ -134,10 +189,13 @@ public class Duke {
 	                } else {
 	                	System.out.printf("Now you have %d tasks in the list.%n", cnt);
 	                }
+	                saveLst(lst, cnt);
 	            }
         	} catch(BlankInputException m) {
 	             System.out.println(m);
 	        } catch (UnknownInputException m) {
+	        	System.out.println(m);
+	        } catch (IOException m) {
 	        	System.out.println(m);
 	        }
         }

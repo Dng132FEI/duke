@@ -9,4 +9,9 @@ public class ToDo extends Task {
 	   return res;
    }
    
+   public String getSave() {
+	   String res = "T|" + super.getSave();
+	   return res;
+   }
+   
 }
