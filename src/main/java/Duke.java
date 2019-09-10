@@ -62,7 +62,7 @@ public class Duke {
 	
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String inp, inpstrt, check1;
+        String inp, inpdone = "", inpdel = "", check1 = "", check2 = "" ;
         Task[] lst = new Task[100];
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
@@ -76,17 +76,22 @@ public class Duke {
         	try {
 	            inp = in.nextLine();
 	            if (inp.length() == 6) {
-	                inpstrt = inp.substring(0,5);
+	                inpdone = inp.substring(0,5);
 	                check1 = inp.substring(5,6);
 	            } else if (inp.length() == 7) {
-	            	inpstrt = inp.substring(0,5);
+	            	inpdone = inp.substring(0,5);
 	                check1 = inp.substring(5,7);
 	            } else if (inp.length() == 8) {
-	            	inpstrt = inp.substring(0,5);
+	            	inpdone = inp.substring(0,5);
 	                check1 = inp.substring(5,8);
-	            } else {
-	            	inpstrt = "";
-	                check1 = "";
+	                inpdel = inp.substring(0,7);
+	                check2 = inp.substring(7,8);
+	            } else if (inp.length() == 9) {
+	            	inpdel = inp.substring(0,7);
+	                check2 = inp.substring(7,9);
+	            } else if (inp.length() == 10) {
+	            	inpdel = inp.substring(0,7);
+	                check2 = inp.substring(7,10);
 	            }
 	            if (inp.equals("bye")) {
 	                System.out.println("Bye. Hope to see you again soon!");
@@ -97,7 +102,7 @@ public class Duke {
 	            		String cur = Integer.toString(i+1);
 	            		System.out.println(cur + "." + lst[i].getPrtout());
 	            	}
-	            } else if (inpstrt.equals("done ") && isNumeric(check1)) { 
+	            } else if (inpdone.equals("done ") && isNumeric(check1)) { 
 	            	int idx = Integer.parseInt(check1)-1;
 	                lst[idx].setAsDone();
 	                System.out.println("Nice! I've marked this task as done:");
@@ -126,8 +131,7 @@ public class Duke {
 	                	ToDo newtd = new ToDo(inp.substring(5)); 
 	                	lst[cnt] = newtd;
 	                	
-	            	}
-	            	else if (cat.equals("deadline")) {
+	            	} else if (cat.equals("deadline")) {
 	            		int check = 0, breaki = -1;
 	            		for (int i = 9; i < inp.length(); i++) {
 	                		curchar = inp.charAt(i);
