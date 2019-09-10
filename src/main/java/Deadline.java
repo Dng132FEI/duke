@@ -1,19 +1,26 @@
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 public class Deadline extends Task {
 
-    protected String by;
+    protected Date by;
 
-    public Deadline(String description, String by) {
+    public Deadline(String description, Date by) {
         super(description);
         this.by = by;
     }
     
    public String getPrtout() {
-	   String res = "[D]" + super.getPrtout() + " (by: " + by + ")";
+	   SimpleDateFormat outputformat = new SimpleDateFormat("dd/MM/yyyy hhmm");
+	   String out = outputformat.format(by);
+	   String res = "[D]" + super.getPrtout() + " (by: " + out + ")";
 	   return res;
    }
    
    public String getSave() {
-	   String res = "D|" + super.getSave() + by + "|";
+	   SimpleDateFormat outputformat = new SimpleDateFormat("dd/MM/yyyy hhmm");
+	   String out = outputformat.format(by);
+	   String res = "D|" + super.getSave() + out + "|";
 	   return res;
    }
    

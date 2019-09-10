@@ -1,19 +1,26 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Event extends Task {
 
-    protected String at;
+    protected Date at;
 
-    public Event(String description, String at) {
+    public Event(String description, Date at) {
         super(description);
         this.at = at;
     }
     
-   public String getPrtout() {
-	   String res = "[E]" + super.getPrtout() + " (at: " + at + ")";
-	   return res;
-   }
+    public String getPrtout() {
+ 	   SimpleDateFormat outputformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
+ 	   String out = outputformat.format(at);
+ 	   String res = "[E]" + super.getPrtout() + " (at: " + out + ")";
+ 	   return res;
+    }
    
    public String getSave() {
-	   String res = "E|" + super.getSave() + at + "|";
+	   SimpleDateFormat outputformat = new SimpleDateFormat("dd/MM/yyyy HHmm");
+ 	   String out = outputformat.format(at);
+	   String res = "E|" + super.getSave() + out + "|";
 	   return res;
    }
    

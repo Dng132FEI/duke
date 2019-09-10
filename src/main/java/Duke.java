@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 import java.io.*;
 
 public class Duke {
@@ -36,15 +39,21 @@ public class Duke {
 			        i++;
 			    }
 		    }
-		    if (type == 'T') {
-		    	ToDo newtd = new ToDo(desc); 
-            	lst[cnt++] = newtd;
-		    } else if (type == 'D') {
-		    	Deadline newdl = new Deadline(desc, time); 
-        		lst[cnt++] = newdl;
-		    } else if (type == 'E') {
-		    	Event newevt = new Event(desc, time); 
-        		lst[cnt++] = newevt;
+		    try {
+			    if (type == 'T') {
+			    	ToDo newtd = new ToDo(desc); 
+	            	lst[cnt++] = newtd;
+			    } else if (type == 'D') {
+			    	Date javatime = getDateTime(time);
+			    	Deadline newdl = new Deadline(desc, javatime); 
+	        		lst[cnt++] = newdl;
+			    } else if (type == 'E') {
+			    	Date javatime = getDateTime(time);
+			    	Event newevt = new Event(desc, javatime); 
+	        		lst[cnt++] = newevt;
+			    }
+		    } catch (ParseException m) {
+		    	System.out.println(m + ". Error during loading.");
 		    }
 		}
 		return cnt;
@@ -58,6 +67,13 @@ public class Duke {
     	}
 		printWriter.close();
 		fileWriter.close();
+	}
+	
+	public static Date getDateTime(String strDateTime) throws ParseException { 
+		SimpleDateFormat sdfrmt = new SimpleDateFormat("dd/MM/yyyy HHmm");
+		sdfrmt.setLenient(false);
+	    Date retDate = sdfrmt.parse(strDateTime);
+	    return retDate;
 	}
 	
     public static void main(String[] args) {
@@ -150,7 +166,8 @@ public class Duke {
 	            			throw new BlankInputException(
 	            					"OOPS!!! The description of a deadline cannot be empty.");
 	            		}
-	            		Deadline newdl = new Deadline(tsk, time); 
+	            		Date javatime = getDateTime(time);
+	            		Deadline newdl = new Deadline(tsk, javatime); 
 	            		lst[cnt] = newdl;
 	            	} else if (cat.equals("event")) {
 	            		int check = 0, breaki = -1;
@@ -175,7 +192,8 @@ public class Duke {
 	            		throw new BlankInputException(
 	        					"OOPS!!! The description of an event cannot be empty.");
 	            	    }
-	            		Event newevt = new Event(tsk, time); 
+	            		Date javatime = getDateTime(time);
+	            		Event newevt = new Event(tsk, javatime); 
 	            		lst[cnt] = newevt;
 	            	} else {
 	            		throw new UnknownInputException(
@@ -197,6 +215,8 @@ public class Duke {
 	        	System.out.println(m);
 	        } catch (IOException m) {
 	        	System.out.println(m);
+	        } catch (ParseException m) {
+	        	System.out.println(m + ". Time should be in the format dd/mm/yyyy hhmm");
 	        }
         }
     }
