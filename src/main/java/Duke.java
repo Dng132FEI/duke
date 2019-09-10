@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.io.*;
 
@@ -13,13 +12,14 @@ public class Duke {
 		    return true;
 	    } catch(NumberFormatException e){  
 		    return false;  
-		}
+		}  
 	}
 	
-	public static void loadLst(ArrayList<Task> lst) throws IOException {
+	public static int loadLst(Task lst[]) throws IOException {
 		File file = new File("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt");
 		Scanner sc = new Scanner(file);
 		String curline = "", desc = "", time = "";
+		int cnt = 0;
 		char type, done;
 		while (sc.hasNextLine()) { 
 		    curline = sc.nextLine(); 
@@ -42,27 +42,28 @@ public class Duke {
 		    try {
 			    if (type == 'T') {
 			    	ToDo newtd = new ToDo(desc); 
-	            	lst.add(newtd);
+	            	lst[cnt++] = newtd;
 			    } else if (type == 'D') {
 			    	Date javatime = getDateTime(time);
 			    	Deadline newdl = new Deadline(desc, javatime); 
-			    	lst.add(newdl);
+	        		lst[cnt++] = newdl;
 			    } else if (type == 'E') {
 			    	Date javatime = getDateTime(time);
 			    	Event newevt = new Event(desc, javatime); 
-			    	lst.add(newevt);
+	        		lst[cnt++] = newevt;
 			    }
 		    } catch (ParseException m) {
 		    	System.out.println(m + ". Error during loading.");
 		    }
 		}
+		return cnt;
 	}
 	
-	public static void saveLst(ArrayList<Task> lst) throws IOException {
+	public static void saveLst(Task lst[], int cnt) throws IOException {
 		FileWriter fileWriter = new FileWriter("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt", false);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		for (int i = 0; i < lst.size(); i++) {
-    		printWriter.printf(lst.get(i).getSave() + "%n");
+		for (int i = 0; i < cnt; i++) {
+    		printWriter.printf(lst[i].getSave() + "%n");
     	}
 		printWriter.close();
 		fileWriter.close();
@@ -78,17 +79,18 @@ public class Duke {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String inp, inpstrt, check1;
-        ArrayList<Task> lst = new ArrayList<Task>();
+        Task[] lst = new Task[100];
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
+        int cnt = 0;
         try {
-            loadLst(lst);
+            cnt = loadLst(lst);
         } catch(IOException m) {
         	System.out.println(m);
         }
         while (true) {
         	try {
-	            inp = in.nextLine(); 
+	            inp = in.nextLine();
 	            if (inp.length() == 6) {
 	                inpstrt = inp.substring(0,5);
 	                check1 = inp.substring(5,6);
@@ -101,23 +103,22 @@ public class Duke {
 	            } else {
 	            	inpstrt = "";
 	                check1 = "";
-	            } // initialize to check for "done" case
-	            
-	            if (inp.equals("bye")) { // input == "bye"
+	            }
+	            if (inp.equals("bye")) {
 	                System.out.println("Bye. Hope to see you again soon!");
 	                break;
-	            } else if (inp.equals("list")) { // input == "list"
+	            } else if (inp.equals("list")) {
 	            	System.out.println("Here are the tasks in your list:");
-	            	for (int i = 0; i < lst.size(); i++) {
+	            	for (int i = 0; i < cnt; i++) {
 	            		String cur = Integer.toString(i+1);
-	            		System.out.println(cur + "." + lst.get(i).getPrtout());
+	            		System.out.println(cur + "." + lst[i].getPrtout());
 	            	}
-	            } else if (inpstrt.equals("done ") && isNumeric(check1)) { // input == "done"
+	            } else if (inpstrt.equals("done ") && isNumeric(check1)) { 
 	            	int idx = Integer.parseInt(check1)-1;
-	                lst.get(idx).setAsDone();
+	                lst[idx].setAsDone();
 	                System.out.println("Nice! I've marked this task as done:");
-	                System.out.println(lst.get(idx).getPrtout());
-	                saveLst(lst);
+	                System.out.println(lst[idx].getPrtout());
+	                saveLst(lst, cnt);
 	            } else { 
 	            	String cat = "", time = "", tsk = "";
 	            	char curchar;
@@ -126,9 +127,9 @@ public class Duke {
 	            		if (inp.charAt(i) == ' ') {
 	            			break;
 	            		}
-	            		cat += curchar; 
-	            	} // find out what category it is
-	            	if (cat.equals("todo")) { // cat == "todo"
+	            		cat += curchar;
+	            	}
+	            	if (cat.equals("todo")) {
 	            		if (inp.equals("todo")) {
 	            			throw new BlankInputException(
 	            					"OOPS!!! The description of a todo cannot be empty.");
@@ -139,8 +140,10 @@ public class Duke {
 	            					"OOPS!!! The description of a todo cannot be empty.");
 	            		}
 	                	ToDo newtd = new ToDo(inp.substring(5)); 
-	                	lst.add(newtd);	                	
-	            	} else if (cat.equals("deadline")) { // cat == "deadline"
+	                	lst[cnt] = newtd;
+	                	
+	            	}
+	            	else if (cat.equals("deadline")) {
 	            		int check = 0, breaki = -1;
 	            		for (int i = 9; i < inp.length(); i++) {
 	                		curchar = inp.charAt(i);
@@ -154,18 +157,18 @@ public class Duke {
 	                			if (inp.charAt(i) == ' ' && inp.charAt(i+1) == '/') {
 	                			    check = 1;
 	                			    breaki = i;
-	                			} // after encountering " /" start reading the characters as the time
+	                			}
 	                		} if (check == 0) {
 	                			tsk += curchar;
 	                		}
-	                	} // obtain the task and deadline
+	                	}
 	            		if (tsk.isBlank()) {
 	            			throw new BlankInputException(
 	            					"OOPS!!! The description of a deadline cannot be empty.");
 	            		}
 	            		Date javatime = getDateTime(time);
 	            		Deadline newdl = new Deadline(tsk, javatime); 
-	            		lst.add(newdl);
+	            		lst[cnt] = newdl;
 	            	} else if (cat.equals("event")) {
 	            		int check = 0, breaki = -1;
 	            		for (int i = 6; i < inp.length(); i++) {
@@ -180,30 +183,31 @@ public class Duke {
 	                			if (inp.charAt(i) == ' ' && inp.charAt(i+1) == '/') {
 	                			    check = 1;
 	                			    breaki = i;
-	                			} // after encountering " /" start reading the characters as the time
+	                			}
 	                		} if (check == 0) {
 	                			tsk += curchar;
 	                		}
-	                	} // obtain the task and event time
+	                	} 
 	            		if (tsk.isBlank()) {
 	            		throw new BlankInputException(
 	        					"OOPS!!! The description of an event cannot be empty.");
 	            	    }
 	            		Date javatime = getDateTime(time);
 	            		Event newevt = new Event(tsk, javatime); 
-	            		lst.add(newevt);
+	            		lst[cnt] = newevt;
 	            	} else {
 	            		throw new UnknownInputException(
 	            				"OOPS!!! I'm sorry, but I don't know what that means :-(");
 	            	}
 	            	System.out.println("Got it. I've added this task:");
-	                System.out.println(" " + lst.get(lst.size()-1).getPrtout());
-	                if (lst.size() == 1) {
-	                    System.out.printf("Now you have %d task in the list.%n", lst.size());
+	                System.out.println(" " + lst[cnt].getPrtout());
+	                cnt++;
+	                if (cnt == 1) {
+	                    System.out.printf("Now you have %d task in the list.%n", cnt);
 	                } else {
-	                	System.out.printf("Now you have %d tasks in the list.%n", lst.size());
+	                	System.out.printf("Now you have %d tasks in the list.%n", cnt);
 	                }
-	                saveLst(lst);
+	                saveLst(lst, cnt);
 	            }
         	} catch(BlankInputException m) {
 	             System.out.println(m);
