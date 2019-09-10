@@ -88,6 +88,7 @@ public class Duke {
         }
         while (true) {
         	try {
+        		
 	            inp = in.nextLine();
 	            if (inp.length() == 6) {
 	                inpdone = inp.substring(0,5);
@@ -124,6 +125,17 @@ public class Duke {
 		            System.out.println("Nice! I've marked this task as done:");
 		            System.out.println(lst.get(idx).getPrtout());
 		            saveLst(lst);
+		        } else if (inpdel.equals("delete ") && isNumeric(check2)) {
+		        	int idx = Integer.parseInt(check2)-1;
+		            System.out.println("Noted! I've removed this task:");
+		            System.out.println(lst.get(idx).getPrtout());
+		            lst.remove(idx);
+		            saveLst(lst);
+		            if (lst.size() == 1) {
+		                System.out.printf("Now you have %d task in the list.%n", lst.size());
+		            } else {
+		            	System.out.printf("Now you have %d tasks in the list.%n", lst.size());
+		            }
 		        } else { 
 		        	String cat = "", time = "", tsk = "";
 		        	char curchar;
