@@ -17,7 +17,8 @@ public class Duke {
 	}
 	
 	public static void loadLst(ArrayList<Task> lst) throws IOException {
-		File file = new File("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt");
+		File file = new File(
+				"C:\\Users\\Fei Dong\\Documents\\NUS_Computing\\CS2113T\\duke\\data\\duke.txt");
 		Scanner sc = new Scanner(file);
 		String curline = "", desc = "", time = "";
 		char type, done;
@@ -59,7 +60,8 @@ public class Duke {
 	}
 
 	public static void saveLst(ArrayList<Task> lst) throws IOException {
-		FileWriter fileWriter = new FileWriter("C:\\Users\\Fei Dong\\Desktop\\duke\\data\\duke.txt", false);
+		FileWriter fileWriter = new FileWriter(
+				"C:\\Users\\Fei Dong\\Documents\\NUS_Computing\\CS2113T\\duke\\data\\duke.txt", false);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		for (int i = 0; i < lst.size(); i++) {
     		printWriter.printf(lst.get(i).getSave() + "%n");
@@ -77,7 +79,7 @@ public class Duke {
 	
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String inp, inpdone = "", check1 = "", inpdel = "", check2 = "";
+        String inp, inpdone = "", check1 = "", inpdel = "", check2 = "", srch = "";
         ArrayList<Task> lst = new ArrayList<Task>();
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
@@ -107,7 +109,10 @@ public class Duke {
 	            } else if (inp.length() == 10) {
 	            	inpdel = inp.substring(0,7);
 	                check2 = inp.substring(7,10);
-	            } // initialize to check for "done" case
+	            } if (inp.length() >= 5) {
+	            	inpdone = inp.substring(0,5);
+	            	srch = inp.substring(5,inp.length());
+	            }
         	  
 
 		        if (inp.equals("bye")) { // input == "bye"
@@ -136,6 +141,15 @@ public class Duke {
 		            } else {
 		            	System.out.printf("Now you have %d tasks in the list.%n", lst.size());
 		            }
+		        } else if (inpdone.equals("find ")) {
+		        	int cnt = 0;
+		        	System.out.println("Here are the matching tasks in your list:");
+		        	for (int i = 0; i < lst.size(); i++) {
+		        		if (lst.get(i).getDescription().contains(srch)) {
+		        			String cur = Integer.toString(i+1);
+			        		System.out.println(cur + "." + lst.get(i).getPrtout());
+		        		}
+		        	}
 		        } else { 
 		        	String cat = "", time = "", tsk = "";
 		        	char curchar;
