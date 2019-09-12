@@ -1,6 +1,6 @@
 public class ToDo extends Task {
 
-    public ToDo(String description) {
+    public ToDo(String description) { 
         super(description);
     }
     
@@ -13,5 +13,4 @@ public class ToDo extends Task {
 	   String res = "T|" + super.getSave();
 	   return res;
    }
-   
 }
