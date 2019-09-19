@@ -1,8 +1,14 @@
-import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
+package Main;
+
+import Storage.Storage;
+import Storage.TaskList;
+import User.Ui;
+import User.Parser;
+import Excption.BlankInputException;
+import Excption.InvalidInputException;
+import Excption.OutOfRangeException;
+import Excption.UnknownInputException;
+
 import java.io.*;
 
 public class Duke {
@@ -25,7 +31,6 @@ public class Duke {
 
 	public void run() {
 	    ui.showWelcome();
-	    boolean isExit = false;
 	    while (true) {
 	        try {
 	            String fullCommand = ui.readCommand();
@@ -40,7 +45,7 @@ public class Duke {
 	            ui.showError(e,"");
 	        } catch (InvalidInputException e) {
 	        	ui.showError(e,"");
-	        } catch (IOException e) {
+	        } catch (OutOfRangeException e) {
 	        	ui.showError(e,"");
 	        }
 	    }

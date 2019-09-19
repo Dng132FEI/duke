@@ -1,3 +1,5 @@
+package Tasks;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,13 +39,13 @@ public class Event extends Task {
     	if (format == 1) {
     		SimpleDateFormat outputformat = new SimpleDateFormat("dd MMM yyyy, hh:mm aa");
     	 	String out = outputformat.format(atobj);
-    	 	return "[E]" + super.getPrtout() + "(at: " + out + ")";
+    	 	return "[E]" + super.getPrtout() + " (at: " + out + ")";
     	} else if (format == 2) {
     		SimpleDateFormat outputformat = new SimpleDateFormat("dd MMM yyyy");
     	 	String out = outputformat.format(atobj);
-    	 	return "[E]" + super.getPrtout() + "(at: " + out + ")";
+    	 	return "[E]" + super.getPrtout() + " (at: " + out + ")";
     	} else {
-    		return "[E]" + super.getPrtout() + "(at: " + atstr + ")";
+    		return "[E]" + super.getPrtout() + " (at: " + atstr + ")";
     	}
      }
 

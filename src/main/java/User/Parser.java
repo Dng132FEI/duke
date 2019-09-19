@@ -1,3 +1,12 @@
+package User;
+
+import Storage.Storage;
+import Storage.TaskList;
+import Excption.BlankInputException;
+import Excption.InvalidInputException;
+import Excption.OutOfRangeException;
+import Excption.UnknownInputException;
+
 import java.io.IOException;
 
 public class Parser {
@@ -10,21 +19,26 @@ public class Parser {
 		this.storage = sto;
 	}
 	
-    public void parseInput(String input) throws UnknownInputException, BlankInputException, InvalidInputException, IOException {
+    public void parseInput(String input) throws UnknownInputException, BlankInputException, InvalidInputException, OutOfRangeException {
     	if (input.equals("list")) { // input == "list"
              tsklst.prtLst();
 	    } else if (input.substring(0,5).equals("done ")) { // input == "done
 	    	if (input.substring(5,input.length()).isBlank()) {
 	    		throw new BlankInputException("OOPS!!! The list index for the done function cannot be empty.");
 	    	}
-		    int idx = Integer.parseInt(input.substring(5,input.length()))-1; // considering include exception
+		    int idx = Integer.parseInt(input.substring(5,input.length()))-1;
+		    if (idx >= tsklst.count() || idx < 0) {
+	    		throw new OutOfRangeException("OOPS!! The number you keyed in is out of range");
+	    	}
 		    tsklst.done(idx);
 	    } else if (input.substring(0,7).equals("delete ")) {
 	    	if (input.substring(7,input.length()).isBlank()) {
 	    		throw new BlankInputException("OOPS!!! The list index for the delete function cannot be empty.");
 	    	}
-	    	int idx = Integer.parseInt(input.substring(7,input.length()))-1; // considering include exception
-	    	
+	    	int idx = Integer.parseInt(input.substring(7,input.length()))-1;
+	    	if (idx >= tsklst.count() || idx < 0) {
+	    		throw new OutOfRangeException("OOPS!! The number you keyed in is out of range");
+	    	}
 		    tsklst.delete(idx);
 	    } else if (input.substring(0,5).equals("find ")) {
             String keyword = input.substring(5,input.length());

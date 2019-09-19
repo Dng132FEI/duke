@@ -1,3 +1,5 @@
+package User;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -31,6 +33,12 @@ public class Ui {
     	System.out.println(ex+". "+msg);
     }
     
+    public void deleted(String delitm, int n) {
+    	System.out.println("Noted! I've removed this task:");
+    	System.out.println(" "+delitm);
+    	printNumTask(n);
+    }
+    
     public void printNumTask(int n) {
     	if (n == 1) {
             System.out.printf("Now you have %d task in the list.%n", n);
@@ -38,6 +46,26 @@ public class Ui {
         	System.out.printf("Now you have %d tasks in the list.%n", n);
         }
     }
-    
-   
+
+	public void prtLst(String itmlst) {
+		System.out.println("Here are the tasks in your list:");
+		System.out.printf(itmlst);
+	}
+	
+	public void found(String itmlst) {
+		System.out.println("Here are the matching tasks in your list:");
+		System.out.printf(itmlst);
+	}
+
+	public void done(String itmstr) {
+		System.out.println("Nice! I've marked this task as done:");
+		System.out.println(" "+itmstr);
+		
+	}
+
+	public void added(String itmstr, int n) {
+		System.out.println("Got it. I've added this task:");
+    	System.out.println(" "+itmstr);
+    	printNumTask(n);
+	}
 }

@@ -1,5 +1,7 @@
+package Excption;
+
 public class BlankInputException extends Exception {
-	BlankInputException(String s){  
+	public BlankInputException(String s){  
         super(s);  
     }  
 }

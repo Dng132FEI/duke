@@ -1,5 +1,7 @@
+package Excption;
+
 public class UnknownInputException extends Exception {
-	UnknownInputException(String s){  
+	public UnknownInputException(String s){  
         super(s);  
     }  
 }
