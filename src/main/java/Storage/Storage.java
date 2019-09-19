@@ -74,7 +74,7 @@ public class Storage {
 		}
 		return lst;
 	}
-
+    
 	public void saveLst(ArrayList<Task> lst) throws IOException {
 		FileWriter fileWriter = new FileWriter(
 				"C:\\Users\\Fei Dong\\Documents\\NUS_Computing\\CS2113T\\duke\\data\\duke.txt", false);
@@ -85,6 +85,5 @@ public class Storage {
 		printWriter.close();
 		fileWriter.close();
 	}
- 
-}
 
+}
